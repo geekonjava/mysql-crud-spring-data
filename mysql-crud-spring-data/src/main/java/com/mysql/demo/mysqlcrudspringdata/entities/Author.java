@@ -18,6 +18,7 @@ public class Author {
 	private long authorId;
 	private String authorName;
 	private String authorUrl;
+	private String authorProfilePic;
 	private String authorUsername;
 	private String authorDescription;
 	private String authorDetails;

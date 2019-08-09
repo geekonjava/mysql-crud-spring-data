@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 
@@ -14,17 +16,52 @@ import org.jsoup.select.Elements;
 public class GitHubScrapper {
 	
 	public static void getGitHubDetails(String userId, String blogUrl) throws IOException {
-			String postUrl = userId+"/"+blogUrl;
-		String url = "https://github.com/"+postUrl;
+			
+		String url = "http://github.com/"+userId+"/"+blogUrl;
 		Document doc = Jsoup.connect(url).get();
 		String data[] = doc.title().replace("GitHub - ", "").split(":");
+		//article details
+			String postUrl = userId+"/"+blogUrl;	
 			String postTitle = getTitle(url);
 			String postDescription = data[1];
 			String postReadMeText = doc.getElementById("readme").text();
 			String postReadme = doc.getElementById("readme").html();
+			int postWatch = 1;
+			int postStar = 2;
+			int postFork = 3;
+			int postContributer = 4;
+		
+		//author details
+		String authorURL = getAuthorURL(url);
+		Document authorDoc = Jsoup.connect(authorURL).get();
+		Elements aImage = authorDoc.select("a[itemprop=image]");
+		Elements aName = authorDoc.select("span[itemprop=name]");
+		Elements aUserName = authorDoc.select("span.vcard-username");
 			
-			System.out.println(String.format("%s - %s - %s", postUrl,postTitle,postDescription));
-			System.out.println(postReadme);
+			String authorProfilePic = aImage.attr("href");
+			String authorName = aName.text();
+			String authorUsername = aUserName.text();
+		
+		String gitScorURL = "http://www.gitscore.com/user/"+authorUsername+"/calculate";
+		try {
+			System.out.println(gitScorURL);
+			String genreJson = IOUtils.toString(new URL(gitScorURL));
+	        JSONObject obj = new JSONObject(genreJson);
+	       
+
+	        int authorRank = (Integer) obj.get("position");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 	
+			
+		//categories details
+		Elements catArray = doc.getElementsByClass("topic-tag");
+		for(Element cat: catArray) {
+			System.out.println(cat.text());
+		}
+			
+			
 	}
 	
 	public static void main(String[] args) throws IOException {
