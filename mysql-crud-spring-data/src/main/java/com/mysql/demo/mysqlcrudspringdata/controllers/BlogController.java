@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mysql.demo.mysqlcrudspringdata.entities.Article;
 import com.mysql.demo.mysqlcrudspringdata.entities.Author;
 import com.mysql.demo.mysqlcrudspringdata.entities.Categories;
-import com.mysql.demo.mysqlcrudspringdata.entities.CategoriesRepo;
 import com.mysql.demo.mysqlcrudspringdata.models.BlogData;
 import com.mysql.demo.mysqlcrudspringdata.repositories.ArticleRepo;
 import com.mysql.demo.mysqlcrudspringdata.repositories.AuthorRepo;
+import com.mysql.demo.mysqlcrudspringdata.repositories.CategoriesRepo;
 
 @RestController
 @RequestMapping("/post")
