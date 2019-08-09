@@ -11,7 +11,21 @@ import org.jsoup.select.Elements;
 
 
 
-public class Demo {
+public class GitHubScrapper {
+	
+	public static void getGitHubDetails(String userId, String blogUrl) throws IOException {
+			String postUrl = userId+"/"+blogUrl;
+		String url = "https://github.com/"+postUrl;
+		Document doc = Jsoup.connect(url).get();
+		String data[] = doc.title().replace("GitHub - ", "").split(":");
+			String postTitle = getTitle(url);
+			String postDescription = data[1];
+			String postReadMeText = doc.getElementById("readme").text();
+			String postReadme = doc.getElementById("readme").html();
+			
+			System.out.println(String.format("%s - %s - %s", postUrl,postTitle,postDescription));
+			System.out.println(postReadme);
+	}
 	
 	public static void main(String[] args) throws IOException {
 		String url = "https://github.com/velesin/jasmine-jquery";
