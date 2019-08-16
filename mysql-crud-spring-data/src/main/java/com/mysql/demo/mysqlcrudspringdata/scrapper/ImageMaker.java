@@ -3,8 +3,10 @@ package com.mysql.demo.mysqlcrudspringdata.scrapper;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,17 +16,17 @@ import javax.imageio.ImageIO;
 
 public class ImageMaker {
 
-	public static void main(String[] args) {
-//		File sourceImageFile = new File("E:/Sawan/Testing/digital_image_processing.jpg");
-//		File destImageFile = new File("E:/Sawan/Testing/digital_image_processing_text_watermarked.jpg");
-//		 
-//		addTextWatermark("CodeJava", sourceImageFile, destImageFile);
-		
+	public static void main(String[] args) throws FontFormatException {
 		File sourceImageFile = new File("E:/Sawan/Testing/digital_image_processing.jpg");
-		File watermarkImageFile = new File("E:/Sawan/Testing/CodeJavaLogo.png");
-		File destImageFile = new File("E:/Sawan/Testing/digital_image_processing_image_watermarked.jpg");
+		File destImageFile = new File("E:/Sawan/Testing/digital_image_processing_text_watermarked.jpg");
 		 
-		addImageWatermark(watermarkImageFile, sourceImageFile, destImageFile);
+		addTextWatermark("CodeJava", sourceImageFile, destImageFile);
+		
+//		File sourceImageFile = new File("E:/Sawan/Testing/digital_image_processing.jpg");
+//		File watermarkImageFile = new File("E:/Sawan/Testing/CodeJavaLogo.png");
+//		File destImageFile = new File("E:/Sawan/Testing/digital_image_processing_image_watermarked.jpg");
+//		 
+//		addImageWatermark(watermarkImageFile, sourceImageFile, destImageFile);
 
 	}
 	
@@ -34,8 +36,9 @@ public class ImageMaker {
 	 * @param text The text to be embedded as watermark.
 	 * @param sourceImageFile The source image file.
 	 * @param destImageFile The output image file.
+	 * @throws FontFormatException 
 	 */
-	static void addTextWatermark(String text, File sourceImageFile, File destImageFile) {
+	static void addTextWatermark(String text, File sourceImageFile, File destImageFile)  {
 	    try {
 	        BufferedImage sourceImage = ImageIO.read(sourceImageFile);
 	        Graphics2D g2d = (Graphics2D) sourceImage.getGraphics();
@@ -44,7 +47,17 @@ public class ImageMaker {
 	        AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
 	        g2d.setComposite(alphaChannel);
 	        g2d.setColor(Color.BLUE);
-	        g2d.setFont(new Font("Arial", Font.BOLD, 64));
+	        
+	        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	        try {
+				ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("E:/Sawan/Testing/Xacto Blade.ttf")));
+			} catch (FontFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+	        
+	        g2d.setFont(new Font("Xacto Blade", Font.PLAIN, 64));
 	        FontMetrics fontMetrics = g2d.getFontMetrics();
 	        Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);
 	 
