@@ -12,4 +12,5 @@ public interface ArticleRepo extends JpaRepository<Article, Long> {
 	List<Article> findByCategories_CategorieName(String catName);
 	List<Article> findByCategories_CategorieId(long id);
 	List<Article> findByAuthor_AuthorId(long authorId);
+	int countByPostUrl(String postUrl);
 }

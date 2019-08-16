@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysql.demo.mysqlcrudspringdata.entities.Article;
 import com.mysql.demo.mysqlcrudspringdata.repositories.ArticleRepo;
 import com.mysql.demo.mysqlcrudspringdata.repositories.AuthorRepo;
 import com.mysql.demo.mysqlcrudspringdata.repositories.CategoriesRepo;
@@ -28,10 +29,12 @@ public class GitHubApi {
 	
 	@GetMapping("/{userId}/{blogUrl}")
 	public void saveArticle(@PathVariable("userId") String userId, @PathVariable("blogUrl") String blogUrl) {
-		try {
-			GitHubScrapper.getGitHubDetails(userId, blogUrl);
-		} catch (IOException e) {
-			e.printStackTrace();
+		String url = "/"+userId+"/"+blogUrl;
+		int noOfArticle = articleRepo.countByPostUrl(url);
+		if(noOfArticle == 0) {
+			Article article = new Article();
+			article.setPostUrl(url);
+			
 		}
 	}
 	

@@ -74,7 +74,7 @@ public class BlogController {
 			
 			article.setAuthor(author);
 		}
-		List<Categories> catList = new ArrayList<Categories>();
+		List<Categories> catList = new ArrayList<>();
 		
 		for(String cat : data.getCategoryName()) {
 			Categories c = catRepo.findByCategorieName(cat);
